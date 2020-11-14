@@ -49,7 +49,7 @@ public:
     int           *OutputDeRefTable;     //
     int           RunImageSize;          // Size (in bytes) of run image.  Used for memset(...).
 
-    Translator::Translator(VivaSystem *_OwningSystem);
+    Translator(VivaSystem *_OwningSystem);
  
     ~Translator();
     

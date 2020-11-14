@@ -1067,7 +1067,8 @@ void __fastcall TMainForm::ElementsListBoxDragDrop(TObject *Sender, TObject *Sou
 void __fastcall TMainForm::AssignDataSetClick(TObject *Sender)
 {
 	// Prevent the user from changing system generated data sets.
-	DataSet    *NewDataSet = GetDataSet(DSName->Text);
+	AnsiString name = DSName->Text;
+	DataSet    *NewDataSet = GetDataSet(name);
 
     if (NewDataSet != NULL &&
 		NewDataSet->SystemGenerated != sgNot)
@@ -1084,12 +1085,13 @@ void __fastcall TMainForm::AssignDataSetClick(TObject *Sender)
 
     // Make sure each child data set is valid and will not cause a circular reference.
     for (int i = ElementsListBox->Items->Count - 1; i >= 0; i--)
-    {
-        DataSet    *ChildDataSet = GetDataSet(ElementsListBox->Items->Strings[i]);
+	{
+		AnsiString name = ElementsListBox->Items->Strings[i];
+		DataSet    *ChildDataSet = GetDataSet(name);
 
         if (ChildDataSet == NULL)
-        {
-			ErrorTrap(10, ElementsListBox->Items->Strings[i]);
+		{
+			ErrorTrap(10, name);
 
             return;
         }
@@ -1142,8 +1144,9 @@ void __fastcall TMainForm::AssignDataSetClick(TObject *Sender)
     // Add the child data sets backwards because they were displayed backwards in the Data Set
     //     Editor inorder to match the order on the exposer/colletor object.
     for (int i = ElementsListBox->Items->Count - 1; i >= 0; i--)
-    {
-        DataSet    *ChildDataSet = GetDataSet(ElementsListBox->Items->Strings[i]);
+	{
+		AnsiString name = ElementsListBox->Items->Strings[i];
+		DataSet    *ChildDataSet = GetDataSet(name);
 
         NewDataSet->ChildDataSets->Add(ChildDataSet);
     }
@@ -1903,9 +1906,10 @@ try
 
                 // Make sure the subsystem name matches the ".sd" file name.
                 VivaSystem	*NewSystem = (VivaSystem *) BaseSystem->SubSystems->Items[
-                    BaseSystem->SubSystems->Count - 1];
+					BaseSystem->SubSystems->Count - 1];
 
-                NewSystem->SyncSystemName(OpenDialog->FileName);
+				AnsiString fileName = OpenDialog->FileName;
+                NewSystem->SyncSystemName(fileName);
 
                 // Set up to use the new system.
                 MyProject->SysEdit->DisplayInTree(SystemTree, false);
@@ -2983,8 +2987,9 @@ void __fastcall TMainForm::ChangeTreeGroupClick(TObject *Sender)
     if (TreeGroupDialog->ModalResult == mrOk &&
         TreeGroupDialog->cmbTreeGroup->Text != OrigTreeGroup)
     {
-        // Rename the tree group in the active tree node and all of its descendents.
-        RenameTreeGroup(TreeNode, TreeGroupDialog->cmbTreeGroup->Text);
+		// Rename the tree group in the active tree node and all of its descendents.
+		AnsiString text = TreeGroupDialog->cmbTreeGroup->Text;
+		RenameTreeGroup(TreeNode, text);
 
         // Redisplay the project object tree view.
         MyProject->BuildTreeView();
@@ -4355,8 +4360,9 @@ void __fastcall TMainForm::cmdSynthesizeClick(TObject *Sender)
     }
     catch(Exception &e)
     {
-        // Inform the user how to recover from errors while compiling.
-        ErrorTrap(133, e.Message);
+		// Inform the user how to recover from errors while compiling.
+		AnsiString msg = e.Message;
+		ErrorTrap(133, msg);
     }
     catch(bad_alloc &b)
     {
@@ -5837,7 +5843,7 @@ bool TMainForm::CanTreeNodeBeDeleted(TTreeNode *TreeNode, bool PerformDelete)
     {
         if (TreeNode->Level > 0 &&
         	TreeNode->Parent->Data == COM_GLOBALS_ROOT_NODE &&
-           !IsDependency(TComResource((::TComObject *) TreeNode->Data)))
+		   !IsDependency(TComResource((::TComObject *) TreeNode->Data)))
         {
             if (PerformDelete)
             {
