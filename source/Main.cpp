@@ -504,7 +504,7 @@ void __fastcall TMainForm::FilePrint(TObject *Sender)
 
     // Open the file in the ".bmp" file editor.
     if (FileSaved)
-	    if (!ShellExecute(Handle, NULL, BmpFileName.c_str(), "", "", SW_SHOWNORMAL))
+	    if (!ShellExecuteA(Handle, NULL, BmpFileName.c_str(), "", "", SW_SHOWNORMAL))
 	        ErrorTrap(4007, BmpFileName);
 
     delete bmp;
@@ -562,7 +562,7 @@ void __fastcall TMainForm::OnlineHelpClick(TObject *Sender)
 	AnsiString	VivaHelpFile = strHelpDir + "Viva_Help.htm";
 
     if (FileExists(VivaHelpFile))
-        ShellExecute(Handle, NULL, VivaHelpFile.c_str(), "", "", SW_SHOWNORMAL);
+        ShellExecuteA(Handle, NULL, VivaHelpFile.c_str(), "", "", SW_SHOWNORMAL);
     else
 	    ErrorTrap(3044, VivaHelpFile);
 }
@@ -574,7 +574,7 @@ void __fastcall TMainForm::UserGuideClick(TObject *Sender)
 	AnsiString	VivaHelpFile = strHelpDir + "VivaUserGuide.pdf";
 
     if (FileExists(VivaHelpFile))
-        ShellExecute(Handle, NULL, VivaHelpFile.c_str(), "", "", SW_SHOWNORMAL);
+		ShellExecuteA(Handle, NULL, VivaHelpFile.c_str(), "", "", SW_SHOWNORMAL);
     else
 	    ErrorTrap(3044, VivaHelpFile);
 }
@@ -1067,7 +1067,7 @@ void __fastcall TMainForm::ElementsListBoxDragDrop(TObject *Sender, TObject *Sou
 void __fastcall TMainForm::AssignDataSetClick(TObject *Sender)
 {
 	// Prevent the user from changing system generated data sets.
-    DataSet    *NewDataSet = GetDataSet(DSName->Text);
+	DataSet    *NewDataSet = GetDataSet(DSName->Text);
 
     if (NewDataSet != NULL &&
 		NewDataSet->SystemGenerated != sgNot)
@@ -1089,7 +1089,7 @@ void __fastcall TMainForm::AssignDataSetClick(TObject *Sender)
 
         if (ChildDataSet == NULL)
         {
-            ErrorTrap(10, ElementsListBox->Items->Strings[i]);
+			ErrorTrap(10, ElementsListBox->Items->Strings[i]);
 
             return;
         }
@@ -1565,7 +1565,7 @@ void __fastcall TMainForm::SystemTreeClick(TObject *Sender)
     ResourcePrototypeSelect->Text = MyProject->EditSystem->SysResourceManager->
         ResourcePrototypeName;
 
-    SysAttMemo->Lines->SetText(MyProject->EditSystem->GetAttributeText().c_str());
+	SysAttMemo->Lines->SetText(MyProject->EditSystem->GetAttributeText().c_str());
     SysDoc->Lines->Text = MyProject->EditSystem->Documentation;
     Location->Text = MyProject->EditSystem->Location;
 }
@@ -6062,7 +6062,7 @@ void __fastcall TMainForm::ObjectReferenceClick(TObject *Sender)
 	AnsiString	ObjectReferenceGuide = strHelpDir + "Viva_Object_Reference_Guide.htm";
 
     if (FileExists(ObjectReferenceGuide))
-        ShellExecute(Handle, NULL, ObjectReferenceGuide.c_str(), "", "", SW_SHOWNORMAL);
+        ShellExecuteA(Handle, NULL, ObjectReferenceGuide.c_str(), "", "", SW_SHOWNORMAL);
     else
 	    ErrorTrap(3044, ObjectReferenceGuide);
 }
