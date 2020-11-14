@@ -870,7 +870,7 @@ void __fastcall TMainForm::FormKeyDown(TObject *Sender, WORD &Key, TShiftState S
                         return;
 
                     if (Selected->Level == 1)
-                        ShowComHelp(((TComObject *) Selected->Data)->ObjectInfo, Handle);
+                        ShowComHelp(((::TComObject *) Selected->Data)->ObjectInfo, Handle);
                     else if (Selected->Level == 2)
                         ShowComHelp((TMemberDesc *) Selected->Data, Handle);
 
@@ -2512,7 +2512,7 @@ void __fastcall TMainForm::ObjectTreeDragDrop(TObject *Sender, TObject *Source, 
         AnsiString			ObjectName = GetUniqueComObjectName(ComClassTree->Selected->Text,
             UsedGlobalObjectNames);
 
-        GlobalComObjects->Add(new TComObject(ObjectInfo, ObjectName));
+        GlobalComObjects->Add(new ::TComObject(ObjectInfo, ObjectName));
         BuildComObjectTree();
     }
     else if (Source == WipTree)

@@ -141,7 +141,7 @@ public:
     };
     union
     {
-        TComObject      *OwningObject;	// for static instances.
+        ::TComObject      *OwningObject;	// for static instances.
         TComDispatch    *ComDispatch;	// for dynamic instances.
     };
 
@@ -161,7 +161,7 @@ protected:
     									//		a parameter, not a Go, Dispatch, etc.
 public:
 
-    TComHelperFunc(I2adl *pI2adlMember, TMemberDesc *pMemberDesc, TComObject *pOwningObject);
+    TComHelperFunc(I2adl *pI2adlMember, TMemberDesc *pMemberDesc, ::TComObject *pOwningObject);
     TComHelperFunc(TComHelper *ComHelper, I2adl *_OwningI2adl);
     static void InitParam(VARIANTARG &Arg, Node *ConnectedTo);
     void InitParams();
@@ -174,7 +174,7 @@ public:
 class TComHelperEvent : public TComHelper
 {
 public:
-    TComHelperEvent(I2adl *I2adlObject, TMemberDesc *pMemberDesc, TComObject *pOwningObject);
+    TComHelperEvent(I2adl *I2adlObject, TMemberDesc *pMemberDesc, ::TComObject *pOwningObject);
     TComHelperEvent(TComHelper *ComHelper, I2adl *_OwningI2adl);
     virtual HRESULT Invoke();
 };
@@ -184,7 +184,7 @@ class TComHelperEventWidget : public TComHelper
 {
 public:
     TComHelperEventWidget(WidgetActiveX *pOwningWidget, TMemberDesc *pMemberDesc
-    	, TComObject *pOwningObject);
+    	, ::TComObject *pOwningObject);
     virtual HRESULT Invoke();
 };
 

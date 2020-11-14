@@ -43,7 +43,7 @@ class PACKAGE VOleControl : public TOleControl
 public:
     TPopupMenu		*OleMenu;       // Menu on which we place commands available on the OLE
     								//		control
-    TComObject		*OwningObject;  // Viva com object wrapper for this control
+	::TComObject		*OwningObject;  // Viva com object wrapper for this control
     TControlData	CData;			// Control data to be used by OLE in creation of this
     								//		ActiveX/OLE control.
 

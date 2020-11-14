@@ -179,7 +179,7 @@ public:
         IOLink          *SourceSinkLink;  	// Link information for communicating between
         									//		systems
         TComHelper      *ComHelper;       	// Contains functions and data for COM operations.
-        TComObject      *ComObject;       	// Used by NAME_DISPATCH; object to which dispatch
+        ::TComObject      *ComObject;       	// Used by NAME_DISPATCH; object to which dispatch
         									//		belongs.
         TComObjectInfo  *CreateObjectInfo; 	// Used by NAME_COMCREATE for dynamic COM
         									//		instantiation.
@@ -209,8 +209,8 @@ public:
     void I2adl_Init(int InputNodeCount = 0, int OutputNodeCount = 0);
 
     // These 3 constructors are strictly for COM use:
-    __fastcall I2adl(TMemberDesc *pMemberDesc, TComObject *pOwningObject);
-    __fastcall I2adl(TComObject *_ComObject);
+    __fastcall I2adl(TMemberDesc *pMemberDesc, ::TComObject *pOwningObject);
+    __fastcall I2adl(::TComObject *_ComObject);
     __fastcall I2adl(TComObjectInfo *_ObjectInfo);
 
     ~I2adl();
@@ -223,7 +223,7 @@ public:
 
     void InitTransport(int X, int Y, bool Horizontal, int Length, bool Forward, bool
     	UseMovingNode = false);
-    void InitComHelper(TMemberDesc *pMemberDesc, TComObject *pOwningObject);
+    void InitComHelper(TMemberDesc *pMemberDesc, ::TComObject *pOwningObject);
     void Conformalize();
     bool ArrangeNodes(bool ConvertOldFile, bool Reconnect = true, bool SetDataSet = true,
     	bool UpdateParentNodeLists = true);
@@ -275,8 +275,8 @@ public:
     bool IsStandardPrimitiveObject();
 
     // Made for Com I2adl only:
-    void InitCom(AnsiString MemberName, TStringList *MemberList, TComObject *ComObject);
-    void InitDispatch(TComObject *_ComObject);
+    void InitCom(AnsiString MemberName, TStringList *MemberList, ::TComObject *ComObject);
+    void InitDispatch(::TComObject *_ComObject);
     void CopyResultData(BYTE *pVal, int nNode = 2, int Offbound = 0);
 
     ProcessGoEnum ProcessGoSignal(Node *EventNode);

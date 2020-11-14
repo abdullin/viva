@@ -171,7 +171,7 @@ public:
     {
         TLibInfo      *LibInfo;
         TComForm      *Form;
-        TComObject    *Object;
+        ::TComObject    *Object;
     };
 
     TComResource(TLibInfo *_LibInfo)
@@ -186,7 +186,7 @@ public:
         Form = _Form;
     }
 
-    TComResource(TComObject *_Object)
+    TComResource(::TComObject *_Object)
     {
         Type = crsObject;
         Object = _Object;
@@ -239,7 +239,7 @@ namespace ComManager
     void BuildComClassTree();
     void BuildComObjectTree();
     TTreeNode *BuildComTreeBranch(TTreeView *ObjectTree, TTreeNode *ParentNode
-    	, TComObject *Object, TStringList *MemberList, AnsiString NodeName);
+    	, ::TComObject *Object, TStringList *MemberList, AnsiString NodeName);
     AnsiString GetUniqueComObjectName(const AnsiString &ObjectName
     	, TStringList *UsedClassNames);
     DataSet *DSFromVarType(USHORT vt);
@@ -258,7 +258,7 @@ namespace ComManager
     bool IsDependency(TComResource &Resource);
     DataSet *DSForDefaultInterface(ITypeInfo *TypeInfo, const AnsiString& TreeGroup);
     TComObjectInfo *GetDefaultInterface(ITypeInfo *TypeInfo);
-    TComObject *FindComObject(const AnsiString &ObjectName);
+    ::TComObject *FindComObject(const AnsiString &ObjectName);
     void OpenComHelpFile(AnsiString HelpFile, ULONG HelpContext, HWND Window);
     void ShowComHelp(TLibInfo *LibInfo, ITypeInfo *TypeInfo, DISPID MemID, HWND Window);
     void ShowComHelp(TLibInfo *LibInfo, HWND Window);
