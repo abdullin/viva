@@ -39,7 +39,7 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 
-#include "globals.h"
+#include "Globals.h"
 #include "VivaComForm.h"
 
 #define STATE_NORMAL             0

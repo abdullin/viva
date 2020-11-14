@@ -33,7 +33,7 @@
 #ifndef ErrorTrapH
 #define ErrorTrapH
 
-#include "globals.h"
+#include "Globals.h"
 #include "StringList.h"
 #include "MessageInfo.h"
 #define ERROR_LOG_FILE_LIMIT 1000

@@ -33,7 +33,7 @@
 #ifndef MyTScrollingWinControlH
 #define MyTScrollingWinControlH
 
-#include "globals.h"
+#include "Globals.h"
 
 class PACKAGE MyTScrollingWinControl : public TScrollingWinControl
 {

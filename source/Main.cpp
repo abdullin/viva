@@ -58,7 +58,7 @@
 #include "VivaIO.h"
 #include "ObjectBrowser.h"
 #include "ComI2adl.h"
-#include "ComFormDesigner.h"
+#include "COMFormDesigner.h"
 #include "Resource.h"
 #include "MyTShape.h"
 #include "SearchEngine.h"
@@ -2911,7 +2911,7 @@ void __fastcall TMainForm::ObjectTreeEdited(TObject *Sender, TTreeNode *Node, An
 {
     if (ObjectTreePageControl->ActivePage == ComTabSheet)
     {
-        TComObject *ComObject = ((TComObject *) Node->Data);
+		::TComObject *ComObject = ((::TComObject *) Node->Data);
 
         // Renaming of a component could be rejected; in such case, an exception will be thrown,
         //      which will jump clean out of this function, and ComObject will not be renamed.
@@ -2919,7 +2919,7 @@ void __fastcall TMainForm::ObjectTreeEdited(TObject *Sender, TTreeNode *Node, An
         // If the corresponding object is not global, then it contains a control; rename it
         //      also; yes, we should be able to assume that Parent is not NULL:
         if (Node->Parent->Data != COM_GLOBALS_ROOT_NODE)
-            ((TComObject *) Node->Data)->OleControl->Name = S;
+			((::TComObject *) Node->Data)->OleControl->Name = S;
 
         ComObject->Name = S;
 
@@ -2929,7 +2929,7 @@ void __fastcall TMainForm::ObjectTreeEdited(TObject *Sender, TTreeNode *Node, An
         for (int i = 0; i < ComI2adlList->Count; i++)
         {
             I2adl    		*ProjectObject = (I2adl *) ComI2adlList->Items[i];
-            TComObject 		*OwningObject = (ProjectObject->ExecuteType == NAME_DISPATCH)
+			::TComObject 		*OwningObject = (ProjectObject->ExecuteType == NAME_DISPATCH)
             							  ? ProjectObject->ComObject
                                           : ProjectObject->ComHelper->OwningObject;
 
@@ -5084,7 +5084,7 @@ void TMainForm::MessageLocateObject(bool LocateAllObjects, VDismember *Hierarchy
             EnsureScrollRange(I2adlView->VertScrollBar, rangey);
 
             I2adlView->HorzScrollBar->Position = max(0, newx);
-            I2adlView->VertScrollBar->Position = max(0, newy);
+			I2adlView->VertScrollBar->Position = max(0, newy);
 
             // The following is a easy/fast way to keep the object selected after pressing the
             //		Back button and then the Next button.  Not perfect, but close enough.
@@ -5141,7 +5141,7 @@ void TMainForm::FindI2adlRefs()
     SearchCriteriaEnum 	SearchCriteria = scOverload;
     bool			  	found = false;
     I2adlList		  	*list = NULL;
-    TComObject		  	*comobject = NULL;
+	::TComObject		  	*comobject = NULL;
     TMemberDesc       	*memberdesc = NULL;
 
     if (ObjectTreePageControl->ActivePage == ComTabSheet)
@@ -5149,12 +5149,12 @@ void TMainForm::FindI2adlRefs()
     	// Setting 'comobject' or 'memberdesc', flags us for a different search.
         if (ActiveTreeNode->Level == 1)
         {
-            comobject = (TComObject *) ActiveTreeNode->Data;
+			comobject = (::TComObject *) ActiveTreeNode->Data;
         }
         else if (ActiveTreeNode->Level == 2)
         {
             memberdesc = (TMemberDesc *) ActiveTreeNode->Data;
-            comobject = (TComObject *) ActiveTreeNode->Parent->Data;
+			comobject = (::TComObject *) ActiveTreeNode->Parent->Data;
         }
         else
         {
@@ -5837,12 +5837,12 @@ bool TMainForm::CanTreeNodeBeDeleted(TTreeNode *TreeNode, bool PerformDelete)
     {
         if (TreeNode->Level > 0 &&
         	TreeNode->Parent->Data == COM_GLOBALS_ROOT_NODE &&
-           !IsDependency(TComResource((TComObject *) TreeNode->Data)))
+           !IsDependency(TComResource((::TComObject *) TreeNode->Data)))
         {
             if (PerformDelete)
             {
             	int			PrefixLen = strCannotLoad.Length();
-                TComObject	*ComObject = (TComObject *) TreeNode->Data;
+                ::TComObject	*ComObject = (::TComObject *) TreeNode->Data;
                 AnsiString	ObjectName = (ComObject == NULL)
                 					   ? TreeNode->Text.SubString(PrefixLen + 1, TreeNode->
                                        		Text.Length() - PrefixLen)
