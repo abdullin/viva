@@ -76,6 +76,9 @@
 #define ACCESS_KEY_STRING_LENGTH	4
 #define DATA_SET_EDITOR_MARGIN		16
 
+#define max(a,b)    (((a) > (b)) ? (a) : (b))
+#define min(a,b)    (((a) < (b)) ? (a) : (b))
+
 extern TStringGrid		*CostCalc;
 
 enum					TreeStateEnum  {tsNeedsRebuild, tsAlreadyBuilt};
@@ -514,7 +517,7 @@ public:
     void			Zoom(int NewViewScale);
     void            SaveSettings();
     void            LoadSettings();
-    AnsiString      MakeFileName(AnsiString RawFileName, bool auto);
+    AnsiString      MakeFileName(AnsiString RawFileName, bool Auto);
 	void 			ClearMessageGridsAndLogFile(bool ReopenLogFile);
 	void 			ClearMessageGrid(TStringGrid *Grid);
     bool			SaveProject(bool Auto);
