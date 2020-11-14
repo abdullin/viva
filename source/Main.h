@@ -48,6 +48,7 @@
 #include "MyTScrollingWinControl.h"
 #include "I2adlEditor.h"
 #include <FileCtrl.hpp>
+#include <System.ImageList.hpp>
 
 // The ObjectTree contains the following in the "data" portion of the tree nodes:
 //     Data Set Exposers    NULL                   BaseSystem   *VivaSystem
