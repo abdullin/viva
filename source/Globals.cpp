@@ -65,10 +65,10 @@
 #include "Translators.h"
 #include "mmsystem.h"
 #include "VivaIO.h"
-#include "new.h"
+//#include "new.h"
 #include "SynthGraphic.h"
 #include "Settings.h"
-#include "ComFormDesigner.h"
+#include "COMFormDesigner.h"
 
 #pragma package(smart_init)
 
@@ -670,11 +670,11 @@ void VivaGlobals::SetUserDir()
 {
 	char	userdir[MAX_PATH];
 
-    SHGetFolderPath(NULL, CSIDL_PROFILE | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT,
+	SHGetFolderPathA(NULL, CSIDL_PROFILE | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT,
     	userdir);
 
     // Old versions of Windows do not have a Settings directory.
-    if (GetFileAttributes(userdir) == 0xFFFFFFFF)
+    if (GetFileAttributesA(userdir) == 0xFFFFFFFF)
     {
         // Can't find the user profile directory.  Inform the user that the Viva\VivaSystem
         //		directory will be used.
@@ -698,7 +698,7 @@ void VivaGlobals::SetTempDir()
 {
 	char	TempPath[MAX_PATH];
 
-    if (GetTempPath(MAX_PATH, TempPath) == 0)
+    if (GetTempPathA(MAX_PATH, TempPath) == 0)
     	TempDir = UserDir;
     else
 	    TempDir = TempPath;
@@ -771,7 +771,7 @@ void VivaGlobals::ColorChange(TEdit *Edit, TEdit *ColorEdit, TColor &NewColor)
     if (Edit->Text.Trim().Length() == 0) // Nothing yet entered
         return;
     // "0x" is not a valid integer value, but is the start of one:
-    if (Edit->Text.LowerCase().AnsiPos("x") == Edit->Text.Trim().Length())
+    if (Edit->Text.LowerCase().Pos("x") == Edit->Text.Trim().Length())
         return;
 
     // Update the NewColor and txtNodeColor with the entered value:
@@ -1167,10 +1167,10 @@ bool VivaGlobals::VivaExec(bool IWait, AnsiString FileName, UINT Param, int *Exi
     AnsiString      		VivaFileName
 		= (GetFileType(ReplaceAll(FileName, "\"", strNull)) == ftCompiledProject)
 		? VivaRunFileName
-		: Application->ExeName;
+		: AnsiString(Application->ExeName);
     AnsiString				strCmd = VivaFileName + " " + FileName + " /" + Param;
 
-    if (!CreateProcess(NULL, strCmd.c_str(), 0, 0, 0, 0, 0, 0, &lpStartUpInfo, &procinfo))
+	if (!CreateProcess(NULL, strCmd.c_str(), 0, 0, 0, 0, 0, 0, &lpStartUpInfo, &procinfo))
     {
         ErrorTrap(4045, FileName);
         return false;
@@ -1219,7 +1219,7 @@ void VivaGlobals::InitProgram()
 
     GetUniqueEventName(&EventName[0], (unsigned long) CurrentProcessID);
     Sleep(5);
-    ThisProcessEvent = OpenEvent(EVENT_ALL_ACCESS, true, EventName);
+	ThisProcessEvent = OpenEventA(EVENT_ALL_ACCESS, true, EventName);
 
     ExitCode = 0;
 
@@ -1243,7 +1243,7 @@ void VivaGlobals::InitProgram()
     ResolvedObjects->Duplicates = dupAccept;
 
 	// Load portio library and initialize pointers
-    hDlPortIO = LoadLibrary("Dlportio.dll");
+    hDlPortIO = LoadLibraryA("Dlportio.dll");
     
     if (hDlPortIO != NULL)
     {
@@ -2439,7 +2439,7 @@ bool VivaGlobals::EventCycle(bool ProcessingComEvent)
 
                         if (TokenList->Count > 0)
                         {
-       				        CreateDirectory(GetBuildDir().c_str(), NULL); // May or may not yet exist.
+       				        CreateDirectoryA(GetBuildDir().c_str(), NULL); // May or may not yet exist.
 	                        TokenList->SaveToFile(CompressionMapFileName);
                         }
 
@@ -2461,7 +2461,7 @@ bool VivaGlobals::EventCycle(bool ProcessingComEvent)
 			catch(Exception &e)
 			{
 				// Inform the user how to recover from errors while compiling.
-				ErrorTrap(133, e.Message);
+				ErrorTrap(133, AnsiString(e.Message));
 				CancelCompile = true;
 			}
 

@@ -1568,7 +1568,7 @@ void __fastcall TMainForm::SystemTreeClick(TObject *Sender)
     ResourcePrototypeSelect->Text = MyProject->EditSystem->SysResourceManager->
         ResourcePrototypeName;
 
-	SysAttMemo->Lines->SetText(MyProject->EditSystem->GetAttributeText().c_str());
+	SysAttMemo->Lines->SetText(UnicodeString(MyProject->EditSystem->GetAttributeText()).c_str());
     SysDoc->Lines->Text = MyProject->EditSystem->Documentation;
     Location->Text = MyProject->EditSystem->Location;
 }

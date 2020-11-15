@@ -32,7 +32,7 @@
 #ifndef ChipDataH
 #define ChipDataH
 
-#include "globals.h"
+#include "Globals.h"
 
 class ChipData
 {
