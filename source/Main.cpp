@@ -2584,7 +2584,7 @@ void __fastcall TMainForm::ObjectTreeDragDrop(TObject *Sender, TObject *Source, 
 
             // Since a tree group was dragged, make it a sub tree group.
             NewTreeGroup = (NewTreeGroup == strNull)
-                         ? SourceNode->Text
+                         ? AnsiString(SourceNode->Text)
                          : NewTreeGroup + strBackSlash + SourceNode->Text;
         }
 
@@ -3213,8 +3213,11 @@ void __fastcall TMainForm::WipTreeEdited(TObject *Sender, TTreeNode *Node, AnsiS
     Node->Text = S;
 
     // Put the new name into Wip sheet container object.
-    if (Node->Data != NULL)
-	    ((I2adl *) Node->Data)->SetName(Node->Text);
+	if (Node->Data != NULL)
+	{
+		AnsiString text = Node->Text;
+		((I2adl *) Node->Data)->SetName(text);
+	}
 
     // Put the new name into the I2adl Editor.
     I2adlView->Invalidate();
@@ -5545,9 +5548,11 @@ void __fastcall TMainForm::cmdSearchOnNameClick(TObject *Sender)
 // Update WIP sheets to have their name set to the caption of the corresponding WIP tree node.
 void __fastcall TMainForm::WipTreeChange(TObject *Sender, TTreeNode *Node)
 {
-    if (Node != NULL && Node->Data != NULL)
-    	((I2adl *) Node->Data)->SetName(Node->Text);
-
+	if (Node != NULL && Node->Data != NULL)
+	{
+		AnsiString text = Node->Text;
+		((I2adl *) Node->Data)->SetName(text);
+	}
 	WipTreeClick(Sender);
 }
 
@@ -5558,8 +5563,11 @@ void __fastcall TMainForm::WipTreeChange(TObject *Sender, TTreeNode *Node)
 void __fastcall TMainForm::WipTreeCustomDrawItem(TCustomTreeView *Sender,
       TTreeNode *Node, TCustomDrawState State, bool &DefaultDraw)
 {
-    if (Node != NULL && Node->Data != NULL)
-	    ((I2adl *) Node->Data)->SetName(Node->Text);
+	if (Node != NULL && Node->Data != NULL)
+	{
+		AnsiString text = Node->Text;
+		((I2adl *) Node->Data)->SetName(text);
+	}
 }
 
 
@@ -5842,16 +5850,17 @@ bool TMainForm::CanTreeNodeBeDeleted(TTreeNode *TreeNode, bool PerformDelete)
     if (ObjectTree == ComObjectTree)
     {
         if (TreeNode->Level > 0 &&
-        	TreeNode->Parent->Data == COM_GLOBALS_ROOT_NODE &&
-		   !IsDependency(TComResource((::TComObject *) TreeNode->Data)))
-        {
-            if (PerformDelete)
+			TreeNode->Parent->Data == COM_GLOBALS_ROOT_NODE)
+		{
+			TComResource res = TComResource((::TComObject *) TreeNode->Data);
+
+			if (!IsDependency(res) && PerformDelete)
             {
             	int			PrefixLen = strCannotLoad.Length();
                 ::TComObject	*ComObject = (::TComObject *) TreeNode->Data;
                 AnsiString	ObjectName = (ComObject == NULL)
-                					   ? TreeNode->Text.SubString(PrefixLen + 1, TreeNode->
-                                       		Text.Length() - PrefixLen)
+									   ? AnsiString(TreeNode->Text.SubString(PrefixLen + 1, TreeNode->
+                                       		Text.Length() - PrefixLen))
                 					   : ComObject->Name;
 
                 if (ErrorTrap(4025, ObjectName) == mrYes)
